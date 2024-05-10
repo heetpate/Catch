@@ -21,7 +21,7 @@ namespace Catch
         int ballSpeed = 8;
 
         //List of balls
-
+        List<Rectangle> ballList = new List<Rectangle>();
 
         int score = 0;
         int time = 500;
@@ -40,6 +40,11 @@ namespace Catch
         public Form1()
         {
             InitializeComponent();
+            Rectangle ball = new Rectangle(50, 0, ballSize, ballSize);
+            ballList.Add(ball);
+
+            ball = new Rectangle(150, 0, ballSize, ballSize);
+            ballList.Add(ball);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -71,7 +76,15 @@ namespace Catch
 
         private void gameTime_Tick(object sender, EventArgs e)
         {
+            //drop the ball objects down the screen
+            for (int i = 0; i < ballList.Count(); i++)
+            {
+                //get new position of y
+                int y = ballList[i].Y + ballSpeed;
 
+                //update the ball object
+                ballList[i] = new Rectangle(ballList[i].X, y, ballSize, ballSize);
+            }
 
             //redraw the screen
             Refresh();
@@ -91,6 +104,10 @@ namespace Catch
             e.Graphics.FillRectangle(whiteBrush, hero);
 
             //draw balls
+            for (int i = 0; i < ballList.Count(); i++)
+            {
+                e.Graphics.FillEllipse(greenBrush, ballList[i]);
+            }
         }
     }
 }
